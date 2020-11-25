@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Tony Williams">
+  <title>Beginning Bash</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4//dist/reset.css">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4//dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4//dist/theme/white.css" id="theme">
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide">
+  <h1 class="title">Beginning Bash</h1>
+  <p class="author">Tony Williams</p>
+  <p class="date">X World 2018</p>
+</section>
+
+<section id="getting-a-terminal-app" class="slide level3">
+<h3>Getting A Terminal App</h3>
+<ul>
+<li>iTerm2</li>
+</ul>
+<aside class="notes">
+<p>This year I’m going to teach this workshop a little differently than I did two years ago. I’m going to talk very little about syntax, you can get syntax from Stack Overflow. I’m going to talk about the zsh shell and how to set it up well, this is entirely opinion and feel free to ignore it.</p>
+<p>I’ll also be talking about using the shell well.</p>
+<p>Then I will show some example scripts and explain how they work, with emphasis on regular expressions in sed and grep.</p>
+<p>Finally. I’ll show you a few places where zsh and bash 3.7 are different.</p>
+<p>Before we get on to the shell I’d like to say a few words about the Terminal app. Number one is don’t use it. Use iTerm2 instead. Right as I am writing this the only place I use Apple’s Terminal is my Silicon Mini DTK as it has better performance until iTerm delivers a Silicon version.</p>
+</aside>
+</section>
+<section id="setting-preferences" class="slide level3">
+<h3>Setting Preferences</h3>
+<aside class="notes">
+<p>The second is to get away from historical absurdities. Back when I started programming we used physical terminals that produced only 80 characters by 24 lines on a 12 or 14 inch monitor. We can give that up, there’s no need to emulate that in 2018. Set your default window size to something more sensible and also a larger font. I use 110 characters by 40 lines and an 18pt font for these old eyes.</p>
+</aside>
+</section>
+<section id="variables" class="slide level3">
+<h3>Variables</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="va">WORD=</span><span class="st">&quot;Foobar&quot;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="bu">echo</span> <span class="va">$WORD</span></span></code></pre></div>
+<aside class="notes">
+<p>Open up your terminal and give that a try. Here we set the bash variable WORD.</p>
+</aside>
+</section>
+<section id="section" class="slide level3">
+<h3></h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="va">WORD=</span><span class="st">&quot;Foobar&quot;</span> ; <span class="bu">echo</span> <span class="va">$WORD</span></span></code></pre></div>
+<aside class="notes">
+<p>Notice the semi colon - we use that to separate two commands on the one line.</p>
+</aside>
+</section>
+<section id="using-a-command" class="slide level3">
+<h3>Using A Command</h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="fu">id</span> -un</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="va">username=</span><span class="kw">`</span><span class="fu">id</span> -un<span class="kw">`</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="bu">echo</span> <span class="va">$username</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a><span class="bu">unset</span> <span class="va">username</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a><span class="bu">echo</span> <span class="va">$username</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a><span class="va">username=$(</span><span class="fu">id</span> -un<span class="va">)</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a><span class="bu">echo</span> <span class="va">$username</span></span></code></pre></div>
+<aside class="notes">
+<p>You can also set a variable to the output of a command. Follow along with me here <DEMO></p>
+</aside>
+</section>
+<section id="special-variables" class="slide level3">
+<h3>Special variables</h3>
+<pre><code>export CDPATH=&quot;.:~:~/Library:~/work:~/Documents&quot;</code></pre>
+<aside class="notes">
+<p>zsh has a number of special variables. We can set them so that life is easier. One of my favourites is CDPATH</p>
+</aside>
+</section>
+<section id="aliases" class="slide level3">
+<h3>Aliases</h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="va">LS_OPTIONS=</span><span class="st">&quot;--color=auto -F -G&quot;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="co"># standard ls coloured</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a><span class="bu">alias</span> ls=<span class="st">&#39;gls $LS_OPTIONS&#39;</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a><span class="co"># standard plus dot files</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a><span class="bu">alias</span> la=<span class="st">&#39;gls $LS_OPTIONS -A&#39;</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a><span class="bu">alias</span> profile=<span class="st">&#39;code -b ~/.zshrc&#39;</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a><span class="bu">alias</span> flushDNS=<span class="st">&#39;dscacheutil -flushcache&#39;</span></span></code></pre></div>
+<aside class="notes">
+<p>In your shell profile you can start a little zsh programming. The simplest shell programming is aliases. We use aliases for providing common or hard to remember options for commands. Here’s a couple of examples.</p>
+</aside>
+</section>
+<section id="functions" class="slide level3">
+<h3>Functions</h3>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="co"># function to send man page to preview</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="fu">manp()</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a><span class="kw">{</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>    <span class="fu">man</span> -t <span class="va">$*</span> <span class="kw">|</span> <span class="ex">open</span> -f -a /Applications/Preview.app/</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a><span class="kw">}</span></span></code></pre></div>
+<aside class="notes">
+<p>Now with aliases the variable part for it must be at the end. If we want something different we have to use a function. Here’s a useful function.</p>
+<p>I have included a copy of my zsh profile so you can see what other possibilities there are.</p>
+<p>Now let’s move on to the simple end of zsh syntax. This one is also from my old bash profile.</p>
+</aside>
+</section>
+<section id="example-decision" class="slide level3">
+<h3>Example Decision</h3>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="co"># make root red</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a><span class="kw">if</span><span class="bu"> [</span> <span class="kw">`</span><span class="fu">id</span> -u<span class="kw">`</span> <span class="ot">=</span> 0<span class="bu"> ]</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a><span class="kw">then</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a>        <span class="va">PS1=</span><span class="st">&quot;\[\033[31m\]\h:\W \u</span><span class="dt">\$</span><span class="st">\[\033[0m\] &quot;</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a><span class="kw">fi</span></span></code></pre></div>
+<aside class="notes">
+<p>An if statement. In this one we decide if we want to change the colour of the prompt depending if we are <code>root</code> or not. Note the <code>id -u</code> between the backticks. When we place a command between backticks the command is run and the output is used. Here we have the <code>id</code> shell command print our user ID, which is 0 if we are root.</p>
+</aside>
+</section>
+<section id="checking-the-result-code" class="slide level3">
+<h3>Checking The Result Code</h3>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="kw">if</span> <span class="fu">ls</span> mysillyfilename <span class="kw">;</span> <span class="kw">then</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a>    <span class="bu">echo</span> <span class="st">&quot;File exists.&quot;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a><span class="kw">fi</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a><span class="co"># checking result code variable</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true"></a><span class="fu">ls</span> mysillyfilename</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true"></a><span class="kw">if</span><span class="bu"> [</span> <span class="va">$?</span> <span class="ot">=</span> 0<span class="bu"> ]</span> ; <span class="kw">then</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true"></a>    <span class="bu">echo</span> <span class="st">&quot;File exists.&quot;</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true"></a><span class="kw">fi</span></span></code></pre></div>
+<aside class="notes">
+<p>We can use the result from any command in an <code>if</code> statement. The special variable <code>$?</code> saves the result of the last command.</p>
+</aside>
+</section>
+<section id="checking-a-file" class="slide level3">
+<h3>Checking A File</h3>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="kw">if</span><span class="bu"> [</span> <span class="ot">-e</span> README.md<span class="bu"> ]</span> ; <span class="kw">then</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a>    <span class="bu">echo</span> <span class="st">&quot;Readme exists&quot;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a><span class="kw">fi</span></span></code></pre></div>
+<aside class="notes">
+<p>We can also test files, their existence and type. Here we use <code>-e</code> to test that the file exists.</p>
+</aside>
+</section>
+<section id="file-checks" class="slide level3">
+<h3>File Checks</h3>
+<table>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">-a</td>
+<td style="text-align: left;">if file exists</td>
+<td style="text-align: center;">-d</td>
+<td style="text-align: left;">if file is directory</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">-e</td>
+<td style="text-align: left;">if file exists</td>
+<td style="text-align: center;">-r</td>
+<td style="text-align: left;">if file is readable</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">-w</td>
+<td style="text-align: left;">if file is writeable</td>
+<td style="text-align: center;">-x</td>
+<td style="text-align: left;">if file is executable</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">-O</td>
+<td style="text-align: left;">is owned by the user</td>
+<td style="text-align: center;">-G</td>
+<td style="text-align: left;">is owned by the group</td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>Here is a list of some of the more useful file tests. <code>man test</code> will get you a comprehensive list and a list of all the comparison operators for strings and numbers</p>
+</aside>
+</section>
+<section id="round-and-round" class="slide level3">
+<h3>Round And Round</h3>
+<ul>
+<li>For</li>
+<li>While</li>
+<li>Done</li>
+</ul>
+</section>
+<section id="while-loop" class="slide level3">
+<h3>While Loop</h3>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="co">#!/bin/zsh</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a><span class="va">WORD=</span><span class="st">&quot;Start&quot;</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a><span class="kw">while</span><span class="bu"> [</span> <span class="st">&quot;</span><span class="va">$WORD</span><span class="st">&quot;</span> <span class="ot">!=</span> <span class="st">&quot;&quot;</span><span class="bu"> ]</span> ; <span class="kw">do</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a><span class="bu">echo</span> -n <span class="st">&quot;Word: &quot;</span> <span class="kw">;</span> <span class="bu">read</span> <span class="va">WORD</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true"></a>    <span class="kw">case</span> <span class="st">&quot;</span><span class="va">$WORD</span><span class="st">&quot;</span><span class="kw"> in</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true"></a>        <span class="kw">(</span> <span class="st">&quot;Foo&quot;</span> <span class="kw">)</span>       <span class="bu">echo</span> <span class="st">&quot;Bar&quot;</span> <span class="kw">;;</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true"></a>        <span class="kw">(</span> <span class="st">&quot;Bar&quot;</span> <span class="kw">)</span>       <span class="bu">echo</span> <span class="st">&quot;Foo&quot;</span> <span class="kw">;;</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true"></a>        <span class="kw">(</span> <span class="st">&quot;FooBar&quot;</span> <span class="kw">)</span>    <span class="bu">echo</span> <span class="st">&quot;No Way&quot;</span> <span class="kw">;;</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true"></a>        <span class="kw">(</span> <span class="st">&quot;&quot;</span> <span class="kw">)</span> <span class="kw">;;</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true"></a>        <span class="kw">(</span> * <span class="kw">)</span>           <span class="bu">echo</span> <span class="st">&quot;FooBar&quot;</span> <span class="kw">;;</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true"></a>    <span class="kw">esac</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true"></a><span class="kw">done</span></span></code></pre></div>
+<aside class="notes">
+<p>A while loop. So long as the statement is true it will loop forever. In <code>while.sh</code>.</p>
+</aside>
+</section>
+<section id="for-ever" class="slide level3">
+<h3>For Ever</h3>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="kw">for</span> <span class="fu">file</span> in *.sh <span class="kw">;</span> <span class="kw">do</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a>    <span class="bu">echo</span> <span class="va">$file</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true"></a><span class="kw">done</span></span></code></pre></div>
+<aside class="notes">
+<p>A for loop. The echo statement will run for each item in <code>*.sh</code>. In <code>for.sh</code>.</p>
+</aside>
+</section>
+<section id="expanding-variables" class="slide level3">
+<h3>Expanding Variables</h3>
+<p>Run this in bash</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a><span class="va">LIST=</span><span class="st">&quot;Foo Bar Baz&quot;</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true"></a><span class="kw">for</span> <span class="ex">i</span> in <span class="va">$LIST</span> <span class="kw">;</span> <span class="kw">do</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true"></a>    <span class="bu">echo</span> <span class="va">$i</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true"></a><span class="kw">done</span></span></code></pre></div>
+<p>Now put the $LIST in quotes</p>
+<p>Now run it in zsh with and without the quotes</p>
+<aside class="notes">
+<p>We can also loop through items in a variable. This where we find a difference between bash and zsh. So what is happening here? Bash will break a string into a list iof you don’t surround it in quotes. That’s why you will often hear “always quote variables in the shell”. zsh doesn’t break a string variable into words.</p>
+</aside>
+</section>
+<section id="field-separator" class="slide level3">
+<h3>Field Separator</h3>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="va">IFS=</span><span class="st">&quot;:&quot;</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true"></a><span class="va">LIST=</span><span class="st">&quot;a:b:c d&quot;</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true"></a><span class="kw">for</span> <span class="ex">i</span> in <span class="va">$LIST</span> <span class="kw">;</span> <span class="kw">do</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true"></a>    <span class="bu">echo</span> <span class="va">$i</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true"></a><span class="kw">done</span></span></code></pre></div>
+<aside class="notes">
+<p>What defines an “item” is the Internal Field Seperator or IFS. Here we change it to a colon. In <code>expand.sh</code>.</p>
+</aside>
+</section>
+<section id="redirection" class="slide level3">
+<h3>Redirection</h3>
+</section>
+<section id="how-its-done" class="slide level3">
+<h3>How It’s Done</h3>
+<ul>
+<li>Fresh output <code>ls &gt; files.txt</code></li>
+<li>Append to the file <code>ls &gt;&gt; files.txt</code></li>
+</ul>
+<aside class="notes">
+<p>We can take the output of a command and redirect it to a file. A single greater than will overwrite an existing file, two will append to the end of an existing file. Both will create the file if it doesn’t exist.</p>
+</aside>
+</section>
+<section id="using-tee" class="slide level3">
+<h3>Using tee</h3>
+<ul>
+<li>Fresh file <code>ls | tee files.txt</code></li>
+<li>Append to the file <code>ls | tee -a files.txt</code></li>
+</ul>
+<aside class="notes">
+<p><code>tee</code> allows us to redirect the output to a file <em>and</em> see it in the terminal.</p>
+</aside>
+</section>
+<section id="both-out-and-err" class="slide level3">
+<h3>Both OUT and ERR</h3>
+<p>If you want to log to the same file: <code>command1 &gt;&gt; log_file 2&gt;&amp;1</code></p>
+If you want different files: <code>command1 &gt;&gt; log_file 2&gt;&gt; err_file</code>
+<aside class="notes">
+<p>There are actually <em>two</em> outputs. The “ordinary” one, STDOUT and one for errors, STDERR. They are numbered 1 and 2 respectively and we can direct them both if we want.</p>
+</aside>
+</section>
+<section id="maths-using-expr" class="slide level3">
+<h3>Maths Using <code>expr</code></h3>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true"></a><span class="va">WEEKS=$1</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true"></a><span class="va">DAYS=</span><span class="kw">`</span><span class="fu">expr</span> <span class="va">$WEEKS</span> <span class="st">&#39;*&#39;</span> <span class="st">&#39;7&#39;</span><span class="kw">`</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true"></a><span class="fu">date</span> -v +<span class="va">${DAYS}</span>d</span></code></pre></div>
+<aside class="notes">
+<p>We can do maths in scripts using the <code>expr</code> command. In <code>weeks.sh</code>.</p>
+</aside>
+</section>
+<section id="maths-using-expansion" class="slide level3">
+<h3>Maths Using Expansion</h3>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a><span class="co">#!/bin/zsh</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true"></a><span class="va">WEEKS=$1</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true"></a><span class="va">DAYS=$(($WEEKS</span>*7<span class="va">))</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true"></a><span class="fu">date</span> -v +<span class="va">${DAYS}</span>d</span></code></pre></div>
+<p>Or even <code>echo $(( 7 * ( 4 + 2 ) ))</code> Though the spaces are not required <code>echo $((7*(4+2)))</code></p>
+<aside class="notes">
+<p>It often looks clearer to use shell arithmetic expansion for maths.</p>
+</aside>
+</section>
+<section id="improve-the-look" class="slide level3">
+<h3>Improve The Look</h3>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a><span class="va">WEEKS=$1</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true"></a><span class="va">DAYS=</span><span class="kw">`</span><span class="fu">expr</span> <span class="va">$WEEKS</span> <span class="st">&#39;*&#39;</span> <span class="st">&#39;7&#39;</span><span class="kw">`</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true"></a><span class="fu">date</span> -v +<span class="va">${DAYS}</span>d <span class="kw">|</span> <span class="fu">awk</span> <span class="st">&#39;{ print $1 &quot; &quot; $2 &quot; &quot; $3 &quot; &quot; $4 }&#39;</span></span></code></pre></div>
+<aside class="notes">
+<p>We can pipe the output of the <code>date</code> command to a utility called <code>awk</code>. This is a powerful text processing language but here we just use a simple command. This one just prints some of the fields. Awk is often used to trim or reformat the output of another command. In <code>weeks3.sh</code>.</p>
+</aside>
+</section>
+<section id="looking-at-some-examples" class="slide level3">
+<h3>Looking At Some Examples</h3>
+<aside class="notes">
+<p>Here I will go through some examples from simple shell scripts that I have written at work. They contain no Suncorp data or passwords.</p>
+</aside>
+</section>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/reveal.js@^4//dist/reveal.js"></script>
+
+  // reveal.js plugins
+  <script src="https://unpkg.com/reveal.js@^4//plugin/notes/notes.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4//plugin/search/search.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4//plugin/zoom/zoom.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+        // Push each slide change to the browser history
+        history: true,
+        // Parallax background size
+        parallaxBackgroundSize: '1920px 1080px', // CSS syntax, e.g. "2100px 900px"
+
+        // reveal.js plugins
+        plugins: [
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    </body>
+</html>
