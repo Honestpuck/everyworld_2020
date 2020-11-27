@@ -1,4 +1,4 @@
-% Beginning Bash
+% zsh Basics 
 % Tony Williams
 % EveryWorld2020
 

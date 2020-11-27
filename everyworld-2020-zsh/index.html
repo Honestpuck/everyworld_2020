@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="generator" content="pandoc">
   <meta name="author" content="Tony Williams">
-  <title>Beginning Bash</title>
+  <title>zsh Basics</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -88,9 +88,9 @@
     <div class="slides">
 
 <section id="title-slide">
-  <h1 class="title">Beginning Bash</h1>
+  <h1 class="title">zsh Basics</h1>
   <p class="author">Tony Williams</p>
-  <p class="date">X World 2018</p>
+  <p class="date">EveryWorld2020</p>
 </section>
 
 <section id="getting-a-terminal-app" class="slide level3">
@@ -288,19 +288,18 @@
 <p>Now put the $LIST in quotes</p>
 <p>Now run it in zsh with and without the quotes</p>
 <aside class="notes">
-<p>We can also loop through items in a variable. This where we find a difference between bash and zsh. So what is happening here? Bash will break a string into a list iof you don’t surround it in quotes. That’s why you will often hear “always quote variables in the shell”. zsh doesn’t break a string variable into words.</p>
+<p>We can also loop through items in a variable. This where we find a difference between bash and zsh. So what is happening here? Bash will break a string into a list if you don’t surround it in quotes. That’s why you will often hear “always quote variables in the shell”. zsh doesn’t break a string variable into words at all unless you ask it.</p>
 </aside>
 </section>
-<section id="field-separator" class="slide level3">
-<h3>Field Separator</h3>
-<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="va">IFS=</span><span class="st">&quot;:&quot;</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true"></a><span class="va">LIST=</span><span class="st">&quot;a:b:c d&quot;</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true"></a><span class="kw">for</span> <span class="ex">i</span> in <span class="va">$LIST</span> <span class="kw">;</span> <span class="kw">do</span></span>
+<section id="expanding-variables---zsh" class="slide level3">
+<h3>Expanding Variables - zsh</h3>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="va">LIST=</span><span class="st">&quot;Foo Bar Baz&quot;</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true"></a><span class="va">WORDS=(</span> <span class="va">$LIST)</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true"></a><span class="kw">for</span> <span class="ex">i</span> in <span class="va">$WORDS</span> <span class="kw">;</span> <span class="kw">do</span></span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true"></a>    <span class="bu">echo</span> <span class="va">$i</span></span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true"></a><span class="kw">done</span></span></code></pre></div>
-<aside class="notes">
-<p>What defines an “item” is the Internal Field Seperator or IFS. Here we change it to a colon. In <code>expand.sh</code>.</p>
-</aside>
+<p>Now try:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a><span class="va">WORDS=(</span> $<span class="dt">{=LIST}</span> <span class="va">)</span></span></code></pre></div>
 </section>
 <section id="redirection" class="slide level3">
 <h3>Redirection</h3>
@@ -312,7 +311,7 @@
 <li>Append to the file <code>ls &gt;&gt; files.txt</code></li>
 </ul>
 <aside class="notes">
-<p>We can take the output of a command and redirect it to a file. A single greater than will overwrite an existing file, two will append to the end of an existing file. Both will create the file if it doesn’t exist.</p>
+<p>‘We can take the output of a command and redirect it to a file. A single greater than will overwrite an existing file, two will append to the end of an existing file. Both will create the file if it doesn’t exist.’</p>
 </aside>
 </section>
 <section id="using-tee" class="slide level3">
@@ -335,22 +334,22 @@ If you want different files: <code>command1 &gt;&gt; log_file 2&gt;&gt; err_file
 </section>
 <section id="maths-using-expr" class="slide level3">
 <h3>Maths Using <code>expr</code></h3>
-<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a><span class="co">#!/bin/bash</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true"></a></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true"></a><span class="va">WEEKS=$1</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true"></a><span class="va">DAYS=</span><span class="kw">`</span><span class="fu">expr</span> <span class="va">$WEEKS</span> <span class="st">&#39;*&#39;</span> <span class="st">&#39;7&#39;</span><span class="kw">`</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true"></a><span class="fu">date</span> -v +<span class="va">${DAYS}</span>d</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true"></a><span class="va">WEEKS=$1</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true"></a><span class="va">DAYS=</span><span class="kw">`</span><span class="fu">expr</span> <span class="va">$WEEKS</span> <span class="st">&#39;*&#39;</span> <span class="st">&#39;7&#39;</span><span class="kw">`</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true"></a><span class="fu">date</span> -v +<span class="va">${DAYS}</span>d</span></code></pre></div>
 <aside class="notes">
 <p>We can do maths in scripts using the <code>expr</code> command. In <code>weeks.sh</code>.</p>
 </aside>
 </section>
 <section id="maths-using-expansion" class="slide level3">
 <h3>Maths Using Expansion</h3>
-<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a><span class="co">#!/bin/zsh</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true"></a></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true"></a><span class="va">WEEKS=$1</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true"></a><span class="va">DAYS=$(($WEEKS</span>*7<span class="va">))</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true"></a><span class="fu">date</span> -v +<span class="va">${DAYS}</span>d</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a><span class="co">#!/bin/zsh</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true"></a><span class="va">WEEKS=$1</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true"></a><span class="va">DAYS=$(($WEEKS</span>*7<span class="va">))</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true"></a><span class="fu">date</span> -v +<span class="va">${DAYS}</span>d</span></code></pre></div>
 <p>Or even <code>echo $(( 7 * ( 4 + 2 ) ))</code> Though the spaces are not required <code>echo $((7*(4+2)))</code></p>
 <aside class="notes">
 <p>It often looks clearer to use shell arithmetic expansion for maths.</p>
@@ -358,9 +357,9 @@ If you want different files: <code>command1 &gt;&gt; log_file 2&gt;&gt; err_file
 </section>
 <section id="improve-the-look" class="slide level3">
 <h3>Improve The Look</h3>
-<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a><span class="va">WEEKS=$1</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true"></a><span class="va">DAYS=</span><span class="kw">`</span><span class="fu">expr</span> <span class="va">$WEEKS</span> <span class="st">&#39;*&#39;</span> <span class="st">&#39;7&#39;</span><span class="kw">`</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true"></a><span class="fu">date</span> -v +<span class="va">${DAYS}</span>d <span class="kw">|</span> <span class="fu">awk</span> <span class="st">&#39;{ print $1 &quot; &quot; $2 &quot; &quot; $3 &quot; &quot; $4 }&#39;</span></span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true"></a><span class="va">WEEKS=$1</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true"></a><span class="va">DAYS=</span><span class="kw">`</span><span class="fu">expr</span> <span class="va">$WEEKS</span> <span class="st">&#39;*&#39;</span> <span class="st">&#39;7&#39;</span><span class="kw">`</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true"></a><span class="fu">date</span> -v +<span class="va">${DAYS}</span>d <span class="kw">|</span> <span class="fu">awk</span> <span class="st">&#39;{ print $1 &quot; &quot; $2 &quot; &quot; $3 &quot; &quot; $4 }&#39;</span></span></code></pre></div>
 <aside class="notes">
 <p>We can pipe the output of the <code>date</code> command to a utility called <code>awk</code>. This is a powerful text processing language but here we just use a simple command. This one just prints some of the fields. Awk is often used to trim or reformat the output of another command. In <code>weeks3.sh</code>.</p>
 </aside>
